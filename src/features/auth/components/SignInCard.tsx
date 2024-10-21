@@ -17,26 +17,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-const formSchema = z.object({
-  email: z.string().trim().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" })
-    .max(256, { message: "Password must be at most 256 characters" }),
-});
+import { useLogin } from "../api/useLogin";
+import { LoginSchema } from "../schemas";
 
 export const SignInCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useLogin();
+
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    // console.log(values);
+    mutate({json: values});
   };
 
   return (
@@ -111,7 +108,11 @@ export const SignInCard = () => {
         <DottedSeparator />
         <CardContent className="p-7 flex items-center justify-center">
           <p>
-            Don&apos;t have an account?<Link href="/sign-up" className="text-blue-700 font-semibold"> Sign Up</Link>
+            Don&apos;t have an account?
+            <Link href="/sign-up" className="text-blue-700 font-semibold">
+              {" "}
+              Sign Up
+            </Link>
           </p>
         </CardContent>
       </div>

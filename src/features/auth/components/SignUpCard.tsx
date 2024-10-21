@@ -23,19 +23,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-const formSchema = z.object({
-  name: z.string().trim().min(1, { message: "Name is required" }),
-  email: z.string().trim().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" })
-    .max(256, { message: "Password must be at most 256 characters" }),
-});
+import { useSignUp } from "../api/useSignUp";
+import { SignUpSchema } from "../schemas";
 
 export const SignUpCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useSignUp();
+
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -43,8 +38,9 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
+    // console.log(values);
+    mutate({ json: values });
   };
 
   return (
@@ -109,7 +105,7 @@ export const SignUpCard = () => {
               )}
             />
             <Button disabled={false} size={"lg"} className="w-full">
-              Sign In
+              Sign Up
             </Button>
           </form>
         </Form>
@@ -125,7 +121,7 @@ export const SignUpCard = () => {
           disabled={false}
         >
           <FcGoogle className="mr-2 size-5" />
-          Login With Google
+          Sign Up With Google
         </Button>
         <Button
           variant={"secondary"}
@@ -134,7 +130,7 @@ export const SignUpCard = () => {
           disabled={false}
         >
           <FaGithub className="mr-2 size-5" />
-          Login With GitHub
+          Sign Up With GitHub
         </Button>
       </CardContent>
       <div className="px-7">
