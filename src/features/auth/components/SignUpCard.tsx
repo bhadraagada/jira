@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -27,7 +29,7 @@ import { useSignUp } from "../api/useSignUp";
 import { SignUpSchema } from "../schemas";
 
 export const SignUpCard = () => {
-  const { mutate } = useSignUp();
+  const { mutate, isPending: isLoading } = useSignUp();
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -104,7 +106,7 @@ export const SignUpCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size={"lg"} className="w-full">
+            <Button disabled={isLoading} size={"lg"} className="w-full">
               Sign Up
             </Button>
           </form>
@@ -118,7 +120,7 @@ export const SignUpCard = () => {
           variant={"secondary"}
           size={"lg"}
           className="w-full"
-          disabled={false}
+          disabled={isLoading}
         >
           <FcGoogle className="mr-2 size-5" />
           Sign Up With Google
@@ -127,7 +129,7 @@ export const SignUpCard = () => {
           variant={"secondary"}
           size={"lg"}
           className="w-full"
-          disabled={false}
+          disabled={isLoading}
         >
           <FaGithub className="mr-2 size-5" />
           Sign Up With GitHub
