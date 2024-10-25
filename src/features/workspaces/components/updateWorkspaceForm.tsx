@@ -298,7 +298,7 @@ export const UpdateWorkspaceForm = ({
                       <Button 
                         className="w-fit mt-6 ml-auto"
                         size={"sm"}
-                        variant={"destructive"}
+                        variant={"primary"}
                         type="button"
                         disabled={isPending || isPendingDelete || isPendingReset}
                         onClick={handleResetInviteCode}
