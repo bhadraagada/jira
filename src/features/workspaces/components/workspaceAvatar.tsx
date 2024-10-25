@@ -5,7 +5,7 @@ import Image from "next/image";
 interface WorkspaceAvatarProps {
   image?: string;
   name: string;
-  clasdName?: string;
+  className?: string;
 }
 
 export const WorkspaceAvatar = ({

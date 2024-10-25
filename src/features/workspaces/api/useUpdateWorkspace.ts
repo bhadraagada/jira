@@ -19,7 +19,7 @@ export const useUpdateWorkspace = () => {
     onSuccess: ({ data }) => {
       toast.success("Workspace Updated");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-      queryClient.invalidateQueries({ queryKey: ["workspaces", data.$id] });
+      queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
       toast.error("Failed to Update workspace");
