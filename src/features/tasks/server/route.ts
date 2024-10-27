@@ -91,39 +91,39 @@ export default app
       );
 
       const assignees = await Promise.all(
-        members.documents.map(async (member)  => {
+        members.documents.map(async (member) => {
           const user = await users.get(member.userId);
 
-          return{
+          return {
             ...member,
             name: user.name,
-            email: user.email
-          }
+            email: user.email,
+          };
         })
-      )
+      );
 
       const populatedTasks = tasks.documents.map((task) => {
         const project = projects.documents.find(
-          (project) => project.$id === task.projectId,
-        )   
+          (project) => project.$id === task.projectId
+        );
 
         const assignee = assignees.find(
-          (assignee) => assignee.$id === task.assigneeId,
-        )   
+          (assignee) => assignee.$id === task.assigneeId
+        );
 
         return {
           ...task,
           project,
           assignee,
         };
-      })
+      });
 
-      return c.json({ 
+      return c.json({
         data: {
           ...tasks,
           documents: populatedTasks,
-        }
-       });
+        },
+      });
     }
   )
   .post(
@@ -134,7 +134,7 @@ export default app
       const user = c.get("user");
       const databases = c.get("databases");
 
-      const { name, status, workspaceId, projectId, dueDate, assigneeID } =
+      const { name, status, workspaceId, projectId, dueDate, assigneeId } =
         c.req.valid("json");
 
       const member = await getMember({
@@ -171,7 +171,7 @@ export default app
           workspaceId,
           projectId,
           dueDate,
-          assigneeID,
+          assigneeId,
           position: newPosition,
         }
       );
