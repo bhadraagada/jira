@@ -1,5 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import { TaskStatus } from "@/features/tasks/types"
 
 import { cn } from "@/lib/utils"
 
@@ -15,6 +16,16 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        [TaskStatus.TODO]:
+          "border-transparent bg-red-500/30 text-red-500/90 hover:bg-red-400/80 ",
+        [TaskStatus.IN_PROGRESS]:
+          "border-transparent bg-yellow-500/20 text-yellow-500/90 hover:bg-yellow-400/80 ",
+        [TaskStatus.IN_REVIEW]:
+          "border-transparent bg-blue-500/20 text-blue-500/90 hover:bg-blue-400/80 ",
+        [TaskStatus.DONE]:
+          "border-transparent bg-green-500/20 text-green-500/90 hover:bg-green-400/80 ",
+          [ TaskStatus.BACKLOG ]:
+          "border-transparent bg-pink-500/20 text-pink-500/90 hover:bg-pink-400/80 ",
       },
     },
     defaultVariants: {

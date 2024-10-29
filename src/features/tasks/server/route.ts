@@ -8,7 +8,7 @@ import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
 import { z } from "zod";
 import { createTaskSchema } from "../schemas";
-import { TaskStatus } from "../types";
+import { Task, TaskStatus } from "../types";
 
 const app = new Hono();
 
@@ -73,7 +73,11 @@ export default app
         query.push(Query.search("name", search));
       }
 
-      const tasks = await databases.listDocuments(DATABASE_ID, TASKS_ID, query);
+      const tasks = await databases.listDocuments<Task>(
+        DATABASE_ID,
+        TASKS_ID,
+        query
+      );
 
       const projectIds = tasks.documents.map((task) => task.projectId);
       const assigneeIds = tasks.documents.map((task) => task.assigneeId);
@@ -107,14 +111,14 @@ export default app
           (project) => project.$id === task.projectId
         );
 
-        const assignee = assignees.find(
+        const assigneeDets = assignees.find(
           (assignee) => assignee.$id === task.assigneeId
         );
 
         return {
           ...task,
           project,
-          assignee,
+          assigneeDets,
         };
       });
 
