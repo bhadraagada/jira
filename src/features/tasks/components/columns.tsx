@@ -104,7 +104,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
       return (
-        <TaskDate value={dueDate} />
+        <TaskDate value={dueDate} className="text-sm p-2"/>
       )
     }
   },

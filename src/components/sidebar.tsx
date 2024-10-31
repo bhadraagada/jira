@@ -7,7 +7,7 @@ import { WorkspaceSwitcher } from "./WorkspaceSwitcher";
 
 export const SideBar = () => {
   return (
-    <aside className="w-full h-full bg-neutral-100 p-4">
+    <aside className="w-full min-h-screen  bg-neutral-100 p-4">
       <Link href={"/"}>
         <Image src={"/logo.svg"} alt="logo" height={75} width={75} />
       </Link>
