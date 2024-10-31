@@ -11,7 +11,7 @@ interface ProjectAvatarProps {
 
 export const ProjectAvatar = ({
   image,
-  name,
+  name = "", // Default to an empty string to prevent undefined
   className,
   fallbackClassName,
 }: ProjectAvatarProps) => {
@@ -32,7 +32,7 @@ export const ProjectAvatar = ({
           fallbackClassName
         )}
       >
-        {name[0]}
+        {name ? name[0] : "?"} {/* Fallback to "?" if name is empty */}
       </AvatarFallback>
     </Avatar>
   );
