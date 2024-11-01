@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MemberAvatar } from "@/features/members/components/member-Avatar";
 import { Project } from "@/features/projects/types";
 import { cn } from "@/lib/utils";
-import { TaskStatus } from "../types";
+import { Task, TaskStatus } from "../types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
+import { useRouter } from "next/navigation";
+import { DottedSeparator } from "@/components/dotted-sep";
 
 interface EventCardProps {
   title: string;
@@ -10,6 +14,7 @@ interface EventCardProps {
   project: Project;
   status: TaskStatus;
   id: string;
+  task: Task[];
 }
 
 const statusColorMap: Record<TaskStatus, string> = {
@@ -26,25 +31,40 @@ export const EventCard = ({
   project,
   status,
   id,
+  task
 }: EventCardProps) => {
+  console.log({"EventCardProps": {task}});
+  
+  const workspaceId = useWorkspaceId();
+  const  router = useRouter();
+
+  const onClick = (
+    e: React.MouseEvent<HTMLDivElement> 
+  ) => {
+    e.stopPropagation();
+
+    router.push(`/workspaces/${workspaceId}/tasks/${id}`);
+  }
+
   return (
     <div className="px-2">
       <div
+      onClick={onClick}
         className={cn(
           "p-1.5 text-sm bg-white text-primary border rounded-md border-l-4 flex flex-col gap-y-1.5 cursor-pointer hover:opacity-75 transition",
           statusColorMap[status]
         )}
       >
-        <p>{title}</p>
-        <div className="flex items-center gap-x-1">
+        <p className="text-sm truncate">{title}</p>
+        <div className="flex items-center gap-x-1 justify-between">
           <MemberAvatar
             name={assignee}
             fallbackClassName="text-xs font-medium"
           />
-          <div className="size-1 rounded-full bg-neutral-300" />
+          <DottedSeparator />
           <ProjectAvatar 
-          name={project?.name}
-          image={project?.imageUrl}
+          name={task.find((t) => t.$id === id)?.project.name}
+          image={task.find((t) => t.$id === id)?.project.imageUrl}
           fallbackClassName="text-xs font-medium"
           />
         </div>
