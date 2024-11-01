@@ -1,3 +1,4 @@
+import { DatePicker } from "@/components/date-picker";
 import {
   Select,
   SelectContent,
@@ -12,7 +13,6 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { FolderIcon, ListChecksIcon, UserIcon } from "lucide-react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
-import { DatePicker } from "@/components/date-picker";
 
 interface DataFiltersProps {
   hideProjectFilter?: boolean;
@@ -98,31 +98,35 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
           ))}
         </SelectContent>
       </Select>
-      <Select
-        defaultValue={projectId ?? undefined}
-        onValueChange={(value) => onProjectChange(value)}
-      >
-        <SelectTrigger className="w-full lg:w-auto h-8">
-          <div className="flex items-center pr-2">
-            <FolderIcon className="size-4 text-muted-foreground mr-2" />
-            <SelectValue placeholder="All Projects" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value={"all"}>All Projects</SelectItem>
-          <SelectSeparator />
-          {projectOptions?.map((project) => (
-            <SelectItem key={project.value} value={project.value}>
-              {project.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <DatePicker 
+      {!hideProjectFilter && (
+        <Select
+          defaultValue={projectId ?? undefined}
+          onValueChange={(value) => onProjectChange(value)}
+        >
+          <SelectTrigger className="w-full lg:w-auto h-8">
+            <div className="flex items-center pr-2">
+              <FolderIcon className="size-4 text-muted-foreground mr-2" />
+              <SelectValue placeholder="All Projects" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={"all"}>All Projects</SelectItem>
+            <SelectSeparator />
+            {projectOptions?.map((project) => (
+              <SelectItem key={project.value} value={project.value}>
+                {project.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+      <DatePicker
         placeholder="Due Date"
         className="w-full lg:w-auto h-8"
         value={dueDate ? new Date(dueDate) : undefined}
-        onChange={(value) => setFilters({ dueDate: value ? value.toISOString() : null })}
+        onChange={(value) =>
+          setFilters({ dueDate: value ? value.toISOString() : null })
+        }
       />
     </div>
   );
